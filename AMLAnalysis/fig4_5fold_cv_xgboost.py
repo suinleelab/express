@@ -12,12 +12,6 @@ import numpy as np
 import pickle
 import matplotlib.pyplot as plt
 from sklearn.metrics import mean_squared_error 
-from scipy.stats import pearsonr
-from scipy.stats import spearmanr
-from sklearn.metrics import precision_recall_curve
-from sklearn.metrics import roc_curve
-from sklearn.metrics import average_precision_score
-from sklearn.metrics import roc_auc_score
 from sklearn.model_selection import ShuffleSplit
 import random
 import xgboost
