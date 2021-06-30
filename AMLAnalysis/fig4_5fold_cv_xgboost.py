@@ -87,7 +87,33 @@ params12 = {'max_depth':8,
 
 params_list = [params1,params2,params3,params4,params5,params6,params7,params8,params9,params10,params11,params12]
 
+def norm(X_df, mean=None, std=None, zero_cols=None):
+    
+    X = X_df.values
+    if std is None:
+        std = np.nanstd(X, axis=0)
+    if zero_cols is None:
+        zero_cols = std!=0
+    X = X[:,zero_cols]
+    X = np.ascontiguousarray(X)
+    if mean is None:
+        mean = np.mean(X, axis=0)
+    X = (X-mean)/std[zero_cols]
+    new_cols = X_df.columns[zero_cols]
+    X_df = pd.DataFrame(data=X,columns = new_cols, index = X_df.index)
+    return(X_df, mean, std, zero_cols)
+
+
+
 def fiveFoldCV():
+
+	# load and concatenate design matrix
+	X_drug_labels = pickle.load(open('../data/X_drug_labels_train.p','rb'))
+	X_drug_targets = pickle.load(open('../data/X_drug_targets_train.p','rb'))
+	X_rna_seq_full = pickle.load(open('../data/X_rna_seq_full_train.p','rb'))
+
+	X = pd.concat([X_drug_labels,X_drug_targets,X_rna_seq_full],axis = 1)
+	y = pickle.load(open('../data/y.p','rb'))
 
 	# initialize lists to hold best test errors and hyperparameters
 	rand_xgb_mse_list = []
